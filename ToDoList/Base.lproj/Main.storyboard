@@ -25,6 +25,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="hDU-oI-MTD" kind="show" identifier="showDetails" id="A3J-Qw-7aF"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -62,7 +65,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GmY-5N-QjJ">
+                                                <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GmY-5N-QjJ">
                                                     <rect key="frame" x="83" y="0.0" width="276" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -173,10 +176,14 @@
                     <navigationItem key="navigationItem" title="New ToDo" largeTitleDisplayMode="never" id="lyp-1B-XoT">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="p9E-ai-dKY">
                             <connections>
-                                <segue destination="txd-lN-upH" kind="unwind" unwindAction="unwindToToDoListWithSegue:" id="i5I-xy-BWs"/>
+                                <segue destination="txd-lN-upH" kind="unwind" unwindAction="unwindToToDoListWithCancelWithSegue:" id="dFe-Uh-4At"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="UPk-TM-a16"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="UPk-TM-a16">
+                            <connections>
+                                <segue destination="txd-lN-upH" kind="unwind" identifier="saveUnwind" unwindAction="unwindToToDoListWithSegue:" id="1Ig-Bh-6Vd"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dueDateLabel" destination="M6V-co-R7k" id="aKR-vF-zad"/>
@@ -206,7 +213,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XRI-UP-Cus" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1881" y="-36"/>
+            <point key="canvasLocation" x="1948" y="374"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8MW-Z5-6Bx">
@@ -229,4 +236,7 @@
         <image name="Checked" width="44" height="44"/>
         <image name="Unchecked" width="44" height="44"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="A3J-Qw-7aF"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -22,10 +22,10 @@ class ToDoTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem
         if let savedToDos = ToDo.loadToDos() {
             todos = savedToDos
-            print("loaded")
+           
         } else {
            todos = ToDo.loadSampleToDos()
-            print("unloaded")
+         
         }
     }
 
@@ -38,13 +38,13 @@ class ToDoTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("cell loaded")
+      
         return todos.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cell")
+      
          guard let cell =
             tableView.dequeueReusableCell(withIdentifier:
                 "ToDoCellIdentifier") else {
@@ -81,7 +81,42 @@ class ToDoTableViewController: UITableViewController {
     }
  
     @IBAction func unwindToToDoList(segue: UIStoryboardSegue) {
+        guard segue.identifier == "saveUnwind" else {
+            return
+        }
         
+        let sourceViewController = segue.source as! NewToDoTableViewController
+        
+        if let todo = sourceViewController.todo {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow{
+                todos[selectedIndexPath.row] = todo
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+            let newIndexPath = IndexPath(row: todos.count, section: 0)
+            todos.append(todo)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
+        }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "showDetails"  {
+            let newTodoTableViewController = segue.destination as! NewToDoTableViewController
+            
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedTodo = todos[indexPath.row]
+            newTodoTableViewController.todo = selectedTodo
+        }
+      
+        
+    }
+    
+    
+    @IBAction func unwindToToDoListWithCancel(segue: UIStoryboardSegue) {
+      
     }
     /*
     // Override to support rearranging the table view.

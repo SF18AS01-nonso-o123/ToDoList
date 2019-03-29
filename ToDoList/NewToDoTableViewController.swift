@@ -22,7 +22,9 @@ class NewToDoTableViewController: UITableViewController {
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     var isPickerHidden = true
+    var todo: ToDo?
     let dueDatePickerIndexPath = IndexPath(row: 1, section: 0)
+    let textViewIndexPath = IndexPath(row: 0, section: 1)
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,7 +33,16 @@ class NewToDoTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        dueDatePickerView.date = Date().addingTimeInterval(24*60*60)
+        if let todo = todo {
+            navigationItem.title = "To Do"
+            titleTextField.text = todo.title
+            isCompleteButton.isSelected = todo.isComplete
+            dueDatePickerView.date = todo.dueDate
+            notesTextView.text = todo.notes
+        } else {
+            dueDatePickerView.date = Date().addingTimeInterval(24*60*60)
+        }
+        
         updateDueDateLabel(date: dueDatePickerView.date)
         upDateSaveState()
     }
@@ -42,7 +53,7 @@ class NewToDoTableViewController: UITableViewController {
     }
     @IBAction func textEditingChanged(_ sender: UITextField) {
         upDateSaveState()
-        titleTextField.resignFirstResponder()
+        //titleTextField.resignFirstResponder()
     }
     
     @IBAction func isCompleteButtonTapped(_ sender: UIButton) {
@@ -67,6 +78,9 @@ class NewToDoTableViewController: UITableViewController {
         switch (indexPath.section, indexPath.row) {
         case (dueDatePickerIndexPath.section, dueDatePickerIndexPath.row):
             return isPickerHidden ? normalCellHeight : largeCellHeight
+        case (textViewIndexPath.section, textViewIndexPath.row):
+            return notesTextView.frame.height == largeCellHeight ? normalCellHeight : largeCellHeight
+     
         default:
             return normalCellHeight
         }
@@ -139,6 +153,16 @@ class NewToDoTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        guard segue.identifier == "saveUnwind" else {
+            return
+        }
+        let title = titleTextField.text!
+            
+        let isComplete = isCompleteButton.isSelected
+        let dueDate = dueDatePickerView.date
+        let notes = notesTextView.text
+        todo = ToDo(title: title, isComplete: isComplete, dueDate: dueDate, notes: notes)
+        
     }
  
 
